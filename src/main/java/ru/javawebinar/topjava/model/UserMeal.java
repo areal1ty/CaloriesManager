@@ -1,9 +1,7 @@
 package ru.javawebinar.topjava.model;
 
-import lombok.Data;
 import java.time.LocalDateTime;
 
-@Data
 public class UserMeal {
     private final LocalDateTime dateTime;
 
@@ -17,4 +15,15 @@ public class UserMeal {
         this.calories = calories;
     }
 
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getCalories() {
+        return calories;
+    }
 }
