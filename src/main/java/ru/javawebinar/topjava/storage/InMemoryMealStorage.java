@@ -7,18 +7,19 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
-public class MapStorage implements MealStorage {
+public class InMemoryMealStorage implements MealStorage {
+    private static final Logger log = Logger.getLogger(InMemoryMealStorage.class.getName());
     private final Map<Integer, Meal> storage = new ConcurrentHashMap<>();
-    private static final Logger log = Logger.getLogger(MapStorage.class.getName());
 
     @Override
-    public void create(Meal m) {
+    public Meal create(Meal m) {
         storage.put(m.getId(), m);
         log.info(m + "successfully saved");
+        return m;
     }
 
     @Override
-    public Meal read(Integer uuid) {
+    public Meal read(int uuid) {
         log.info("read");
         return storage.get(uuid);
     }
@@ -29,25 +30,16 @@ public class MapStorage implements MealStorage {
     }
 
     @Override
-    public void update(Meal m) {
+    public Meal update(Meal m) {
         storage.put(m.getId(), m);
         log.info(m + "updated");
+        return m;
     }
 
     @Override
-    public void delete(Integer uuid) {
+    public void delete(int uuid) {
         storage.remove(uuid);
         log.info("removed");
     }
 
-    @Override
-    public void clear() {
-        storage.clear();
-        log.info("database cleared");
-    }
-
-    @Override
-    public int size() {
-        return storage.size();
-    }
 }

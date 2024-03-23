@@ -5,7 +5,7 @@ import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.Enumeration;
 
-public class IdGenerator {
+public class uuidGenerator {
     private static final int NODE_ID_BITS = 10;
     private static final int SEQUENCE_BITS = 12;
 
@@ -14,13 +14,13 @@ public class IdGenerator {
 
     private static final long CUSTOM_EPOCH = 1420070400000L;
 
-    private final Integer id;
+    private final Integer uuid;
 
     private volatile long lastTimestamp = -1L;
     private volatile long sequence = 0L;
 
-    public IdGenerator() {
-        this.id = createId();
+    public uuidGenerator() {
+        this.uuid = createId();
     }
 
     public synchronized Integer nextId() {
@@ -41,14 +41,14 @@ public class IdGenerator {
 
         lastTimestamp = currentTimestamp;
 
-        long id = currentTimestamp << (NODE_ID_BITS + SEQUENCE_BITS);
-        id |= (id << SEQUENCE_BITS);
-        id |= sequence;
-        if (id > Integer.MAX_VALUE) {
-            int truncatedId = (int) (id % Integer.MAX_VALUE);
+        long uuid= currentTimestamp << (NODE_ID_BITS + SEQUENCE_BITS);
+       uuid|= (uuid << SEQUENCE_BITS);
+       uuid|= sequence;
+        if (uuid > Integer.MAX_VALUE) {
+            int truncatedId = (int) (uuid % Integer.MAX_VALUE);
             return Math.abs(truncatedId);
         } else {
-            return Math.abs((int) id);
+            return Math.abs((int) uuid);
         }
     }
 
@@ -64,7 +64,7 @@ public class IdGenerator {
     }
 
     private Integer createId() {
-        int id;
+        int uuid;
         try {
             StringBuilder sb = new StringBuilder();
             Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
@@ -77,11 +77,11 @@ public class IdGenerator {
                     }
                 }
             }
-            id = sb.toString().hashCode();
+           uuid= sb.toString().hashCode();
         } catch (Exception ex) {
-            id = new SecureRandom().nextInt();
+           uuid= new SecureRandom().nextInt();
         }
-        id = Math.abs(id) % MAX_NODE_ID;
-        return id;
+       uuid= Math.abs(uuid) % MAX_NODE_ID;
+        return uuid;
     }
 }

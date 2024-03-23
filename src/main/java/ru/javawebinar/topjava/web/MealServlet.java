@@ -1,10 +1,10 @@
 package ru.javawebinar.topjava.web;
 
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.storage.MapStorage;
+import ru.javawebinar.topjava.storage.InMemoryMealStorage;
 import ru.javawebinar.topjava.storage.MealStorage;
-import ru.javawebinar.topjava.util.IdGenerator;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.util.uuidGenerator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -24,23 +25,23 @@ public class MealServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        storage = new MapStorage();
+        storage = new InMemoryMealStorage();
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");
-        String id = request.getParameter("id");
+        String uuid= request.getParameter("id");
         String dateTime = request.getParameter("dateTime");
         String description = request.getParameter("description");
         String calories = request.getParameter("calories");
 
         Meal meal = new Meal(LocalDateTime.parse(dateTime), description, Integer.parseInt(calories));
 
-        if (id.isEmpty()) {
+        if (uuid.isEmpty()) {
             storage.create(meal);
         } else {
-            meal.setId(Integer.parseInt(id));
+            meal.setId(Integer.parseInt(uuid));
             storage.update(meal);
         }
         response.sendRedirect("meals");
@@ -48,14 +49,21 @@ public class MealServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        storage.create(new Meal(1, LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500));
+        storage.create(new Meal(2, LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000));
+        storage.create(new Meal( 3, LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500));
+        storage.create(new Meal( 4, LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100));
+        storage.create(new Meal( 5, LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000));
+        storage.create(new Meal( 6, LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500));
+        storage.create(new Meal(  7, LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410));
         String forward;
         String action = (request.getParameter("action") == null ? "" : request.getParameter("action"));
-        String id = request.getParameter("id");
-        IdGenerator generator = new IdGenerator();
+        String uuid= request.getParameter("id");
+        uuidGenerator generator = new uuidGenerator();
         Meal meal;
         switch (action) {
             case "delete": {
-                storage.delete(Integer.parseInt(id));
+                storage.delete(Integer.parseInt(uuid));
                 response.sendRedirect("meals");
                 return;
             }
@@ -66,12 +74,12 @@ public class MealServlet extends HttpServlet {
             }
             case "view": {
                 forward = VIEW;
-                meal = storage.read(Integer.parseInt(id));
+                meal = storage.read(Integer.parseInt(uuid));
                 break;
             }
             case "edit": {
                 forward = INSERT_OR_EDIT;
-                meal = storage.read(Integer.parseInt(id));
+                meal = storage.read(Integer.parseInt(uuid));
                 break;
             }
             default:

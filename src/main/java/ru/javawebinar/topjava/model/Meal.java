@@ -6,7 +6,7 @@ import java.time.LocalTime;
 import java.util.Objects;
 
 public class Meal {
-    private Integer id;
+    private Integer uuid;
 
     private final LocalDateTime dateTime;
 
@@ -18,11 +18,11 @@ public class Meal {
         this(null, dateTime, description, calories);
     }
 
-    public Meal(Integer id, LocalDateTime dateTime, String description, int calories) {
+    public Meal(Integer uuid, LocalDateTime dateTime, String description, int calories) {
+        this.uuid = uuid;
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
-        this.id = id;
     }
 
     public LocalDateTime getDateTime() {
@@ -46,30 +46,17 @@ public class Meal {
     }
 
     public Integer getId() {
-        return id;
+        return uuid;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Meal meal = (Meal) o;
-        return calories == meal.calories && Objects.equals(id, meal.id) && Objects.equals(dateTime, meal.dateTime) && Objects.equals(description, meal.description);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, dateTime, description, calories);
+    public void setId(Integer uuid) {
+        this.uuid = uuid;
     }
 
     @Override
     public String toString() {
         return "Meal{" +
-                "id=" + id +
+                "id=" +uuid+
                 ", dateTime=" + dateTime +
                 ", description='" + description + '\'' +
                 ", calories=" + calories +

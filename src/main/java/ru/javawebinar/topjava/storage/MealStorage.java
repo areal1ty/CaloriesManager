@@ -5,11 +5,9 @@ import ru.javawebinar.topjava.model.Meal;
 import java.util.List;
 
 public interface MealStorage {
-    void create(Meal m);
-    Meal read(Integer uuid);
+    Meal create(Meal m);
+    Meal read(int uuid);
     List<Meal> readAll();
-    void update(Meal m);
-    void delete(Integer uuid);
-    void clear();
-    int size();
+    Meal update(Meal m);
+    void delete(int uuid);
 }
