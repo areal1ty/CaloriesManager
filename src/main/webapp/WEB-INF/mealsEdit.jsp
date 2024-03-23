@@ -10,7 +10,7 @@
     <h3><a href="index.html">Главная страница</a></h3>
     <hr>
     <h2>${param.action == 'create' ? 'Create' : 'Edit'}</h2>
-    <jsp:useBean uuid="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
+    <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
     <form method="post" action="meals">
         <input type="hidden" name="id" value="${meal.id}">
         <dl>

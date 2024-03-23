@@ -27,7 +27,7 @@
         <input type="hidden" name="action" value="getAllFiltered">
         От даты (включая)
         <div>
-            Дата <input type="date" name="dateBegin" uuid="dateBegin" value="${param['dateBegin']}">
+            Дата <input type="date" name="dateBegin" id="dateBegin" value="${param['dateBegin']}">
         </div>
 
         До даты (включая)
@@ -58,7 +58,7 @@
         </tr>
         </thead>
         <c:forEach items="${requestScope.meals}" var="meal">
-            <jsp:useBean uuid="meal" type="ru.javawebinar.topjava.model.MealTo"/>
+            <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
             <tr class="${meal.excess ? 'excess' : 'normal'}">
                 <td>
                     <%=TimeUtil.toString(meal.getDateTime())%>
