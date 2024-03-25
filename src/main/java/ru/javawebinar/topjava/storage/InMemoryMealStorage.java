@@ -1,21 +1,33 @@
 package ru.javawebinar.topjava.storage;
+import org.slf4j.Logger;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 public class InMemoryMealStorage implements MealStorage {
-    private static final Logger log = Logger.getLogger(InMemoryMealStorage.class.getName());
+    private static final Logger log = getLogger(InMemoryMealStorage.class);
     private final Map<Integer, Meal> storage = new ConcurrentHashMap<>();
+    private final AtomicInteger counter = new AtomicInteger(0);
+
+    {
+        MealsUtil.meals.forEach(this::create);
+    }
 
     @Override
     public Meal create(Meal m) {
-        storage.put(m.getId(), m);
-        log.info(m + "successfully saved");
-        return m;
+        if (m.isNotExist()) {
+            m.setUuid(counter.incrementAndGet());
+            storage.put(m.getUuid(), m);
+            return m;
+        }
+        return storage.computeIfPresent(m.getUuid(), (uuid, olderMeal) -> m);
     }
 
     @Override
@@ -30,16 +42,9 @@ public class InMemoryMealStorage implements MealStorage {
     }
 
     @Override
-    public Meal update(Meal m) {
-        storage.put(m.getId(), m);
-        log.info(m + "updated");
-        return m;
-    }
-
-    @Override
-    public void delete(int uuid) {
-        storage.remove(uuid);
-        log.info("removed");
+    public boolean delete(int uuid) {
+        log.info("remove {}", read(uuid));
+        return storage.remove(uuid) != null;
     }
 
 }

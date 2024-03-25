@@ -10,9 +10,9 @@
     <h3><a href="index.html">Главная страница</a></h3>
     <hr>
     <h2>${param.action == 'create' ? 'Create' : 'Edit'}</h2>
-    <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
+    <c:set var="meal" value="${requestScope.meal}" />
     <form method="post" action="meals">
-        <input type="hidden" name="id" value="${meal.id}">
+        <input type="hidden" name="uuid" value="${meal.uuid}">
         <dl>
             <dt>Дата/Время:</dt>
             <dd><input type="datetime-local" value="${meal.dateTime}" name="dateTime" required></dd>

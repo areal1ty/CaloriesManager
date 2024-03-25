@@ -21,17 +21,7 @@ public class MealTo {
         this.excess = excess;
     }
 
-    @Override
-    public String toString() {
-        return "MealTo{" +
-                "dateTime=" + dateTime +
-                ", description='" + description + '\'' +
-                ", calories=" + calories +
-                ", excess=" + excess +
-                '}';
-    }
-
-    public Integer getId() {
+    public Integer getUuid() {
         return uuid;
     }
 
@@ -51,5 +41,15 @@ public class MealTo {
         return excess;
     }
 
+    @Override
+    public String toString() {
+        return "MealTo{" +
+                "uuid=" + uuid +
+                ", dateTime=" + dateTime +
+                ", description='" + description + '\'' +
+                ", calories=" + calories +
+                ", excess=" + excess +
+                '}';
+    }
 
 }

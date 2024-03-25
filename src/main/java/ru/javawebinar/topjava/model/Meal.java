@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Meal {
+
     private Integer uuid;
 
     private final LocalDateTime dateTime;
@@ -44,18 +45,21 @@ public class Meal {
         return dateTime.toLocalTime();
     }
 
-    public Integer getId() {
+    public Integer getUuid() {
         return uuid;
     }
-
-    public void setId(Integer uuid) {
+    public void setUuid(Integer uuid) {
         this.uuid = uuid;
+    }
+
+    public boolean isNotExist() {
+        return uuid == null;
     }
 
     @Override
     public String toString() {
         return "Meal{" +
-                "id=" +uuid+
+                "uuid=" + uuid+
                 ", dateTime=" + dateTime +
                 ", description='" + description + '\'' +
                 ", calories=" + calories +

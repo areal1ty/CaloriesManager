@@ -8,6 +8,5 @@ public interface MealStorage {
     Meal create(Meal m);
     Meal read(int uuid);
     List<Meal> readAll();
-    Meal update(Meal m);
-    void delete(int uuid);
+    boolean delete(int uuid);
 }
