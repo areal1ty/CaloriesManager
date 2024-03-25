@@ -33,9 +33,9 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");
-        String uuid = request.getParameter("uuid");
+        String id = request.getParameter("id");
 
-        Meal meal = new Meal(uuid.isEmpty() ? null : Integer.valueOf(uuid),
+        Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
@@ -48,19 +48,19 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        String uuid = request.getParameter("uuid");
+        String id = request.getParameter("id");
 
         switch (action == null ? "default" : action) {
             case "delete":
-                log.info("Meal with uuid = {} deleted", uuid);
-                storage.delete(getUuid(request));
+                log.info("Meal with id = {} deleted", id);
+                storage.delete(getid(request));
                 response.sendRedirect("meals");
                 break;
-            case "save":
+            case "create":
             case "edit":
-                final Meal meal = "save".equals(action) ?
+                final Meal meal = "create".equals(action) ?
                         new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1) :
-                        storage.read(getUuid(request));
+                        storage.read(getid(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher(INSERT_OR_EDIT).forward(request, response);
                 break;
@@ -73,8 +73,8 @@ public class MealServlet extends HttpServlet {
         }
     }
 
-    private int getUuid(HttpServletRequest request) {
-        return Integer.parseInt(Objects.requireNonNull(request.getParameter("uuid")));
+    private int getid(HttpServletRequest request) {
+        return Integer.parseInt(Objects.requireNonNull(request.getParameter("id")));
     }
 
 }

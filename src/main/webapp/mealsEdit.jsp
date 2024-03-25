@@ -12,7 +12,7 @@
     <h2>${param.action == 'save' ? 'Create' : 'Edit'}</h2>
     <c:set var="meal" value="${requestScope.meal}" />
     <form method="post" action="meals">
-        <input type="hidden" name="uuid" value="${meal.uuid}">
+        <input type="hidden" name="id" value="${meal.id}">
         <dl>
             <dt>Дата/Время:</dt>
             <dd><input type="datetime-local" value="${meal.dateTime}" name="dateTime" required></dd>

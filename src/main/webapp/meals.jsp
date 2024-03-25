@@ -21,7 +21,7 @@
     <h3><a href="index.html">Главная страница</a></h3>
     <hr/>
     <h1>Meals</h1>
-    <a href="meals?action=save">Добавить</a>
+    <a href="meals?action=create">Добавить</a>
     <br><br>
     <form method="get" action="meals">
         <input type="hidden" name="action" value="getAllFiltered">
@@ -65,8 +65,8 @@
                 </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
-                <td><a href="meals?action=edit&uuid=${meal.uuid}">Изменить</a></td>
-                <td><a href="meals?action=delete&uuid=${meal.uuid}">Удалить</a></td>
+                <td><a href="meals?action=edit&id=${meal.id}">Изменить</a></td>
+                <td><a href="meals?action=delete&id=${meal.id}">Удалить</a></td>
             </tr>
         </c:forEach>
     </table>

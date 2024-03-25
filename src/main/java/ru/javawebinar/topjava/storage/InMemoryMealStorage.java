@@ -23,18 +23,18 @@ public class InMemoryMealStorage implements MealStorage {
     @Override
     public Meal save(Meal m) {
         if (m.isNew()) {
-            m.setUuid(counter.incrementAndGet());
-            storage.put(m.getUuid(), m);
+            m.setid(counter.incrementAndGet());
+            storage.put(m.getid(), m);
             log.info("{} saved", m);
             return m;
         }
-        return storage.computeIfPresent(m.getUuid(), (uuid, olderMeal) -> m);
+        return storage.computeIfPresent(m.getid(), (id, olderMeal) -> m);
     }
 
     @Override
-    public Meal read(int uuid) {
-        log.info("read {}", uuid);
-        return storage.get(uuid);
+    public Meal read(int id) {
+        log.info("read {}", id);
+        return storage.get(id);
     }
 
     @Override
@@ -44,9 +44,9 @@ public class InMemoryMealStorage implements MealStorage {
     }
 
     @Override
-    public boolean delete(int uuid) {
-        log.info("remove {}", uuid);
-        return storage.remove(uuid) != null;
+    public boolean delete(int id) {
+        log.info("remove {}", id);
+        return storage.remove(id) != null;
     }
 
 }
