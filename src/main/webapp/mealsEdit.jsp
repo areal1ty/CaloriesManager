@@ -9,7 +9,7 @@
 <section>
     <h3><a href="index.html">Главная страница</a></h3>
     <hr>
-    <h2>${param.action == 'create' ? 'Create' : 'Edit'}</h2>
+    <h2>${param.action == 'save' ? 'Create' : 'Edit'}</h2>
     <c:set var="meal" value="${requestScope.meal}" />
     <form method="post" action="meals">
         <input type="hidden" name="uuid" value="${meal.uuid}">

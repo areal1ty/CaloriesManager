@@ -17,14 +17,15 @@ public class InMemoryMealStorage implements MealStorage {
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        MealsUtil.meals.forEach(this::create);
+        MealsUtil.meals.forEach(this::save);
     }
 
     @Override
-    public Meal create(Meal m) {
-        if (m.isNotExist()) {
+    public Meal save(Meal m) {
+        if (m.isNew()) {
             m.setUuid(counter.incrementAndGet());
             storage.put(m.getUuid(), m);
+            log.info("{} saved", m);
             return m;
         }
         return storage.computeIfPresent(m.getUuid(), (uuid, olderMeal) -> m);
@@ -32,18 +33,19 @@ public class InMemoryMealStorage implements MealStorage {
 
     @Override
     public Meal read(int uuid) {
-        log.info("read");
+        log.info("read {}", uuid);
         return storage.get(uuid);
     }
 
     @Override
     public List<Meal> readAll() {
+        log.info("real all elements in storage");
         return new ArrayList<>(storage.values());
     }
 
     @Override
     public boolean delete(int uuid) {
-        log.info("remove {}", read(uuid));
+        log.info("remove {}", uuid);
         return storage.remove(uuid) != null;
     }
 

@@ -36,12 +36,12 @@ public class MealServlet extends HttpServlet {
         String uuid = request.getParameter("uuid");
 
         Meal meal = new Meal(uuid.isEmpty() ? null : Integer.valueOf(uuid),
-        LocalDateTime.parse(request.getParameter("dateTime")),
-        request.getParameter("description"),
-        Integer.parseInt(request.getParameter("calories")));
+                LocalDateTime.parse(request.getParameter("dateTime")),
+                request.getParameter("description"),
+                Integer.parseInt(request.getParameter("calories")));
 
-        log.info(meal.isNotExist() ? "saved {} in storage" : "updated {} in storage", meal);
-        storage.create(meal);
+        log.info(meal.isNew() ? "saved {} in storage" : "updated {} in storage", meal);
+        storage.save(meal);
         response.sendRedirect("meals");
     }
 
@@ -53,18 +53,18 @@ public class MealServlet extends HttpServlet {
         switch (action == null ? "default" : action) {
             case "delete":
                 log.info("Meal with uuid = {} deleted", uuid);
-                storage.delete(Integer.parseInt(uuid));
+                storage.delete(getUuid(request));
                 response.sendRedirect("meals");
                 break;
-            case "create":
+            case "save":
             case "edit":
-                final Meal meal = "create".equals(action) ?
+                final Meal meal = "save".equals(action) ?
                         new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1) :
                         storage.read(getUuid(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher(INSERT_OR_EDIT).forward(request, response);
                 break;
-            case "default" :
+            case "default":
             default:
                 request.setAttribute("meals", MealsUtil.filteredByStreams(storage.readAll(), LocalTime.MIN, LocalTime.MAX, MealsUtil.MAX_CALORIES));
                 request.getRequestDispatcher(LIST).forward(request, response);

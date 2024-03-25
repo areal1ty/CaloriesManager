@@ -21,7 +21,7 @@
     <h3><a href="index.html">Главная страница</a></h3>
     <hr/>
     <h1>Meals</h1>
-    <a href="meals?action=create">Добавить</a>
+    <a href="meals?action=save">Добавить</a>
     <br><br>
     <form method="get" action="meals">
         <input type="hidden" name="action" value="getAllFiltered">
@@ -61,7 +61,7 @@
             <c:set var="mealTo" value="${meal}"/>
             <tr class="${meal.excess ? 'excess' : 'normal'}">
                 <td>
-                    ${TimeUtil.toString(meal.dateTime)}
+                        ${TimeUtil.toString(meal.dateTime)}
                 </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>

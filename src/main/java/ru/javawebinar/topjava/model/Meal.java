@@ -48,18 +48,19 @@ public class Meal {
     public Integer getUuid() {
         return uuid;
     }
+
     public void setUuid(Integer uuid) {
         this.uuid = uuid;
     }
 
-    public boolean isNotExist() {
+    public boolean isNew() {
         return uuid == null;
     }
 
     @Override
     public String toString() {
         return "Meal{" +
-                "uuid=" + uuid+
+                "uuid=" + uuid +
                 ", dateTime=" + dateTime +
                 ", description='" + description + '\'' +
                 ", calories=" + calories +
