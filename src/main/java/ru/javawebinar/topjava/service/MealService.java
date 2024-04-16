@@ -21,8 +21,8 @@ public class MealService {
         this.repository = repository;
     }
 
-    public Meal create(Meal Meal) {
-        return repository.save(Meal);
+    public Meal create(Meal Meal, int userId) {
+        return repository.save(Meal, userId);
     }
 
     public void delete(int id, int userId) {
@@ -37,11 +37,11 @@ public class MealService {
         return repository.getAll(userId);
     }
 
-    public List<Meal> getMealsBetweenDatesInclusively(@Nullable LocalDate dateOfStart, @Nullable LocalDate dateOfEnd, int userId) {
-        return repository.getBetweenHalfOpen(atStartOfDayOrMin(dateOfStart), atStartOfNextDayOrMax(dateOfEnd), userId);
+    public List<Meal> getMealsBetweenDatesInclusively(@Nullable LocalDate startDate, @Nullable LocalDate endDate, int userId) {
+        return repository.getBetweenHalfOpen(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate), userId);
     }
 
-    public void update(Meal Meal) {
-        checkNotFoundWithId(repository.save(Meal), Meal.getId());
+    public void update(Meal meal, int userId) {
+        checkNotFoundWithId(repository.save(meal, userId), meal.getId());
     }
 }

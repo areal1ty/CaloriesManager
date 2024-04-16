@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface MealRepository {
     // null if updated meal does not belong to userId
-    Meal save(Meal meal);
+    Meal save(Meal meal, int userId);
 
     // false if meal does not belong to userId
-    boolean delete(int userId, int id);
+    boolean delete(int id, int userId);
 
     // null if meal does not belong to userId
     Meal get(int id, int userId);
@@ -18,5 +18,5 @@ public interface MealRepository {
     // ORDERED dateTime desc
     List<Meal> getAll(int userId);
 
-    List<Meal> getBetweenHalfOpen(LocalDateTime dateTimeOfStart, LocalDateTime dateTimeOfEnd, int userId);
+    List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId);
 }

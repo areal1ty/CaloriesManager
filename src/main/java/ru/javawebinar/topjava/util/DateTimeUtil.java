@@ -1,5 +1,8 @@
 package ru.javawebinar.topjava.util;
 
+import org.springframework.lang.Nullable;
+import org.springframework.util.StringUtils;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -24,6 +27,14 @@ public class DateTimeUtil {
 
     public static LocalDateTime atStartOfNextDayOrMax(LocalDate localDate) {
         return localDate != null ? localDate.plusDays(1).atStartOfDay() : MAX_DATE;
+    }
+
+    public static @Nullable LocalDate parseLocalDate(@Nullable String s) {
+        return StringUtils.hasLength(s) ? LocalDate.parse(s) : null;
+    }
+
+    public static @Nullable LocalTime parseLocalTime(@Nullable String s) {
+        return StringUtils.hasLength(s) ? LocalTime.parse(s) : null;
     }
 
 }

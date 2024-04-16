@@ -69,10 +69,6 @@ public class User extends AbstractNamedEntity {
         return enabled;
     }
 
-    public boolean isNew() {
-        return getId() == null;
-    }
-
     public Set<Role> getRoles() {
         return roles;
     }
