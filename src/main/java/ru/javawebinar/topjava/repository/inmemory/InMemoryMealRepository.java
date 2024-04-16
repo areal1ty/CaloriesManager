@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.repository.inmemory;
 
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
@@ -18,6 +17,7 @@ import java.util.stream.Collectors;
 
 import static ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository.ADMIN_ID;
 import static ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository.USER_ID;
+import static ru.javawebinar.topjava.util.DateTimeUtil.isBetweenHalfOpen;
 
 @Repository
 public class InMemoryMealRepository implements MealRepository {
@@ -61,11 +61,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
-        return filterWithPredicate(meal -> isBetweenHafOpen(meal.getDateTime(), startDateTime, endDateTime), userId);
-    }
-
-    public static <T extends Comparable<T>> boolean isBetweenHafOpen(T value, @Nullable T start, @Nullable T end) {
-        return (start == null || value.compareTo(start) >= 0 && (end == null || value.compareTo(end) < 0));
+        return filterWithPredicate(meal -> isBetweenHalfOpen(meal.getDateTime(), startDateTime, endDateTime), userId);
     }
 
 }
