@@ -21,7 +21,7 @@ import static ru.javawebinar.topjava.util.DateTimeUtil.isBetweenHalfOpen;
 
 @Repository
 public class InMemoryMealRepository implements MealRepository {
-    private final Map<Integer, InMemoryRepository<Meal>> repository = new ConcurrentHashMap<>();
+    private final Map<Integer, InMemoryRepository<Meal>> mealRepository = new ConcurrentHashMap<>();
 
     {
         MealsUtil.meals.forEach(meal -> save(meal, USER_ID));
@@ -31,18 +31,20 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Meal save(Meal meal, int userId) {
-        return repository.computeIfAbsent(userId, id -> new InMemoryRepository<>()).save(meal);
+        InMemoryRepository<Meal> meals = mealRepository.computeIfAbsent(userId, id -> new InMemoryRepository<>());
+        return meals.save(meal);
     }
 
     @Override
     public boolean delete(int id, int userId) {
-        InMemoryRepository<Meal> m = repository.get(userId);
+        InMemoryRepository<Meal> m = mealRepository.get(userId);
         return m != null && m.delete(id);
     }
 
     @Override
     public Meal get(int id, int userId) {
-        return repository.get(userId).get(id);
+        InMemoryRepository<Meal> meals = mealRepository.get(userId);
+        return meals == null ? null : meals.get(id);
     }
 
     @Override
@@ -51,7 +53,7 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     private List<Meal> filterWithPredicate(Predicate<Meal> filter, int userId) {
-        InMemoryRepository<Meal> m = repository.get(userId);
+        InMemoryRepository<Meal> m = mealRepository.get(userId);
         return m == null ? Collections.emptyList() :
                 m.getCollection().stream()
                         .filter(filter)

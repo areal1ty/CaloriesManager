@@ -21,7 +21,7 @@ import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
 
 @Controller
 public class MealRestController {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final MealService service;
 
@@ -64,6 +64,7 @@ public class MealRestController {
         int userId = SecurityUtil.authUserId();
 
         List<Meal> mealsDateFiltered = service.getMealsBetweenDatesInclusively(startDate, endDate, userId);
+        log.info("get meals of {} between {} {} and {} {}", userId, startDate, startTime, endDate, endTime);
         return MealsUtil.getFilteredTos(mealsDateFiltered, authUserCaloriesPerDay(), startTime, endTime);
     }
 
