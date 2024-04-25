@@ -57,7 +57,6 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-
         switch (action == null ? "all" : action) {
             case "delete":
                 int id = getId(request);
@@ -77,7 +76,21 @@ public class MealServlet extends HttpServlet {
                 LocalTime startTime = parseLocalTime(request.getParameter("startTime"));
                 LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
                 LocalTime endTime = parseLocalTime(request.getParameter("endTime"));
-                request.setAttribute("meals", controller.getMealsBetweenDates(startDate,startTime, endDate, endTime));
+
+                if (startDate == null) {
+                    startDate = LocalDate.MIN;
+                }
+                if (endDate == null) {
+                    endDate = LocalDate.now();
+                }
+                if (startTime == null) {
+                    startTime = LocalTime.MIN;
+                }
+                if (endTime == null) {
+                    endTime = LocalTime.MAX;
+                }
+
+                request.setAttribute("meals", controller.getBetweenDateTime(startDate, startTime, endDate, endTime));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
             case "all":

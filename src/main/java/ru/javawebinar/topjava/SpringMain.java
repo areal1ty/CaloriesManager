@@ -23,12 +23,12 @@ public class SpringMain {
 
             MealRestController mealController = appCtx.getBean(MealRestController.class);
             List<MealTo> filteredMealsWithExcess =
-                    mealController.getMealsBetweenDates(
+                    mealController.getBetweenDateTime(
                             LocalDate.of(2024, Month.MARCH, 30), LocalTime.of(7, 0),
                             LocalDate.of(2024, Month.MARCH, 31), LocalTime.of(11, 0));
             filteredMealsWithExcess.forEach(System.out::println);
             System.out.println();
-            System.out.println(mealController.getMealsBetweenDates(null, null, null, null));
+            System.out.println(mealController.getBetweenDateTime(null, null, null, null));
         }
     }
 }

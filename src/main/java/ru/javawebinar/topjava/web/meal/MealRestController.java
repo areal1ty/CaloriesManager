@@ -59,11 +59,11 @@ public class MealRestController {
         service.update(meal, userId);
     }
 
-    public List<MealTo> getMealsBetweenDates(@Nullable LocalDate startDate, @Nullable LocalTime startTime,
-                                             @Nullable LocalDate endDate, @Nullable LocalTime endTime) {
+    public List<MealTo> getBetweenDateTime(@Nullable LocalDate startDate, @Nullable LocalTime startTime,
+                                           @Nullable LocalDate endDate, @Nullable LocalTime endTime) {
         int userId = SecurityUtil.authUserId();
 
-        List<Meal> mealsDateFiltered = service.getMealsBetweenDatesInclusively(startDate, endDate, userId);
+        List<Meal> mealsDateFiltered = service.getBetweenDateTimeInclusively(startDate, endDate, userId);
         log.info("get meals of {} between {} {} and {} {}", userId, startDate, startTime, endDate, endTime);
         return MealsUtil.getFilteredTos(mealsDateFiltered, authUserCaloriesPerDay(), startTime, endTime);
     }

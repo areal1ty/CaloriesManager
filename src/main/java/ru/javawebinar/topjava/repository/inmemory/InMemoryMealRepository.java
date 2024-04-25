@@ -37,8 +37,8 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public boolean delete(int id, int userId) {
-        InMemoryRepository<Meal> m = mealRepository.get(userId);
-        return m != null && m.delete(id);
+        InMemoryRepository<Meal> meals = mealRepository.get(userId);
+        return meals != null && meals.delete(id);
     }
 
     @Override
@@ -53,9 +53,9 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     private List<Meal> filterWithPredicate(Predicate<Meal> filter, int userId) {
-        InMemoryRepository<Meal> m = mealRepository.get(userId);
-        return m == null ? Collections.emptyList() :
-                m.getCollection().stream()
+        InMemoryRepository<Meal> meals = mealRepository.get(userId);
+        return meals == null ? Collections.emptyList() :
+                meals.getCollection().stream()
                         .filter(filter)
                         .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                         .collect(Collectors.toList());
