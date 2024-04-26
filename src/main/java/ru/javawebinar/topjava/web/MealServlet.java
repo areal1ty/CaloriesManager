@@ -77,19 +77,6 @@ public class MealServlet extends HttpServlet {
                 LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
                 LocalTime endTime = parseLocalTime(request.getParameter("endTime"));
 
-                if (startDate == null) {
-                    startDate = LocalDate.MIN;
-                }
-                if (endDate == null) {
-                    endDate = LocalDate.now();
-                }
-                if (startTime == null) {
-                    startTime = LocalTime.MIN;
-                }
-                if (endTime == null) {
-                    endTime = LocalTime.MAX;
-                }
-
                 request.setAttribute("meals", controller.getBetweenDateTime(startDate, startTime, endDate, endTime));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
