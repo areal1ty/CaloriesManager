@@ -45,8 +45,8 @@ public class MealServlet extends HttpServlet {
         Meal meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
-        if (StringUtils.hasLength(request.getParameter("id"))) {
-            controller.update(meal, getId(request));
+        if (StringUtils.hasLength(request.getParameter("userId"))) {
+            controller.update(meal, getUserId(request));
         } else {
             controller.create(meal);
         }
@@ -59,7 +59,7 @@ public class MealServlet extends HttpServlet {
         String action = request.getParameter("action");
         switch (action == null ? "all" : action) {
             case "delete":
-                int id = getId(request);
+                int id = getUserId(request);
                 controller.delete(id);
                 response.sendRedirect("meals");
                 break;
@@ -67,7 +67,7 @@ public class MealServlet extends HttpServlet {
             case "update":
                 final Meal meal = "create".equals(action) ?
                         new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
-                        controller.get(getId(request));
+                        controller.get(getUserId(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
@@ -88,8 +88,8 @@ public class MealServlet extends HttpServlet {
         }
     }
 
-    private int getId(HttpServletRequest request) {
-        String paramId = Objects.requireNonNull(request.getParameter("id"));
+    private int getUserId(HttpServletRequest request) {
+        String paramId = Objects.requireNonNull(request.getParameter("userId"));
         return Integer.parseInt(paramId);
     }
 }
