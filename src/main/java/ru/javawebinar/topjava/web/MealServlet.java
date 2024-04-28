@@ -45,8 +45,8 @@ public class MealServlet extends HttpServlet {
         Meal meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
-        if (StringUtils.hasLength(request.getParameter("userId"))) {
-            controller.update(meal, getUserId(request));
+        if (StringUtils.hasLength(request.getParameter("id"))) {
+            controller.update(meal, getId(request));
         } else {
             controller.create(meal);
         }
@@ -57,9 +57,10 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
+
         switch (action == null ? "all" : action) {
             case "delete":
-                int id = getUserId(request);
+                int id = getId(request);
                 controller.delete(id);
                 response.sendRedirect("meals");
                 break;
@@ -67,7 +68,7 @@ public class MealServlet extends HttpServlet {
             case "update":
                 final Meal meal = "create".equals(action) ?
                         new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
-                        controller.get(getUserId(request));
+                        controller.get(getId(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
@@ -76,8 +77,7 @@ public class MealServlet extends HttpServlet {
                 LocalTime startTime = parseLocalTime(request.getParameter("startTime"));
                 LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
                 LocalTime endTime = parseLocalTime(request.getParameter("endTime"));
-
-                request.setAttribute("meals", controller.getBetweenDateTime(startDate, startTime, endDate, endTime));
+                request.setAttribute("meals", controller.getBetweenDateTime(startDate,startTime, endDate, endTime));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
             case "all":
@@ -88,8 +88,8 @@ public class MealServlet extends HttpServlet {
         }
     }
 
-    private int getUserId(HttpServletRequest request) {
-        String paramId = Objects.requireNonNull(request.getParameter("userId"));
+    private int getId(HttpServletRequest request) {
+        String paramId = Objects.requireNonNull(request.getParameter("id"));
         return Integer.parseInt(paramId);
     }
 }
